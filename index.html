@@ -47,7 +47,11 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="index">
-    <h1>Welcome to the Flint &amp; Flame!</h1>
+    <h1>Welcome to the Flint &amp; Flame.</h1>
+
+    <p>There are {{productsCount}} products.</p>
+    <img {{bindAttr src="logo"}} alt="Logo" />
+    <p>Rendered on {{time}}.</p>
   </script>
 
   <script type="text/x-handlebars" data-template-name="about">
@@ -55,7 +59,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="credits">
-    <h1>We need more credits.</h1>
+    <h1>Thanks! We need more credits.</h1>
   </script>
 
   <script src="js/libs/jquery-1.10.2.js"></script>
