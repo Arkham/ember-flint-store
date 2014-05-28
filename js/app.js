@@ -9,7 +9,9 @@ App = Ember.Application.create({
 App.Router.map(function() {
   this.route('about');
   this.route('credits', { path: '/thanks' });
-  this.resource('products');
+  this.resource('products', function() {
+    this.route('onsale');
+  });
   this.resource('product', { path: "/products/:product_id" });
   this.resource('contacts');
   this.resource('contact', { path: "/contacts/:contact_id" });
@@ -26,6 +28,15 @@ App.IndexRoute = Ember.Route.extend({
 App.ProductsRoute = Ember.Route.extend({
   model: function() {
     return this.store.findAll('product');
+  }
+});
+
+App.ProductsOnsaleRoute = Ember.Route.extend({
+  model: function() {
+    return this.modelFor('products').filterBy('isOnSale');
+  },
+  renderTemplate: function(controller) {
+    this.render('products/index', { controller: controller });
   }
 });
 
@@ -94,7 +105,7 @@ App.Product.FIXTURES = [
     title: "Flint",
     price: 99,
     description: "Flint is good for your skin",
-    isOnSale: true,
+    isOnSale: false,
     image: "images/products/flint.png",
     reviews: [100, 101],
     crafter: 1
