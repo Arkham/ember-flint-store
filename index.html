@@ -73,20 +73,29 @@
     </div>
 
     {{#each onSale}}
-      <div class="col-sm-4">
-        <img {{bind-attr src="image"}} class="img-thumbnail col-sm-5" />
-        <div class="col-sm-7">
-          <span class='label label-warning'>
-            {{#link-to 'products.onsale' class="text-warning"}}On Sale{{/link-to}}
-          </span>
-          <h2>{{title}}</h2>
-          <p>{{description}}</p>
-          <p>{{#link-to 'product' this class='btn btn-success'}}
-            Buy for ${{price}}
-            {{/link-to}}</p>
-        </div>
-      </div>
+      {{product-details product=this classNames='col-sm-4'}}
     {{/each}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="components/product-details">
+    <img {{bind-attr src="product.image"}} class="img-thumbnail col-sm-5" />
+    <div class="col-sm-7">
+      {{#if product.isOnSale}}
+        <span class='label label-warning'>
+          {{#link-to 'products.onsale' class="text-warning"}}On Sale{{/link-to}}
+        </span>
+      {{/if}}
+      <h2>{{product.title}}</h2>
+      <p>{{product.description}}</p>
+
+      {{#if hasReviews}}
+        <p class='text-muted'>Read all reviews ({{reviewsCount}}).</p>
+      {{/if}}
+
+      <p>{{#link-to 'product' product class='btn btn-success'}}
+        Buy for ${{product.price}}
+        {{/link-to}}</p>
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="about">
@@ -106,29 +115,23 @@
   <script type="text/x-handlebars" data-template-name="products/index">
     <ul class="list-unstyled col-md-12">
       {{#each}}
-        <li class="row">
-          <img {{bind-attr src="image"}} class="img-thumbnail col-md-3" />
-          <div class="col-md-9">
-            {{#if isOnSale}}
-              <span class='label label-warning'>
-                {{#link-to 'products.onsale' class="text-warning"}}On Sale{{/link-to}}
-              </span>
-            {{/if}}
+        {{product-details product=this tagName='li' classNames='row'}}
+      {{/each}}
+    </ul>
+  </script>
 
-            <h2>{{title}}</h2>
-            <p>{{description}}</p>
-            <p>{{#link-to 'product' this tagName="button" class="btn btn-success"}}Buy for ${{price}}{{/link-to}}</p>
-          </div>
-        </li>
+  <script type="text/x-handlebars" data-template-name="products/onsale">
+    <ul class='list-unstyled'>
+      {{#each}}
+        {{product-details product=this tagName='li' classNames='row'}}
       {{/each}}
     </ul>
   </script>
 
   <script type="text/x-handlebars" data-template-name="product">
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-8">
         <h2>{{title}}</h2>
-        <p class='text-muted'>Created by {{#link-to 'contact' crafter}}{{crafter.name}}{{/link-to}}</p>
 
         <h3 class="text-success">${{price}}</h3>
         <p class="text-muted">{{description}}</p>
@@ -138,14 +141,15 @@
           {{#each reviews}}
             <li>{{text}}</li>
           {{else}}
-            <li>
-              <p class='text-muted'><em>No reviews yet. Be the first to write one!</em></p>
-            </li>
+            <li><p class='text-muted'><em>No reviews yet. Be the first to write one!</em></p></li>
           {{/each}}
         </ul>
+
+        <h3>Crafter</h3>
+        {{contact-details contact=crafter}}
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-4">
         <img {{bind-attr src="image"}} class="img-thumbnail img-rounded" />
       </div>
     </div>
@@ -157,18 +161,26 @@
     <ul class="list-unstyled col-md-12">
       {{#each}}
         <li class="row">
-          <img {{bind-attr src="avatar" alt="name"}} class="img-thumbnail col-md-3" />
-          <div class="col-md-9">
-            <h2>
-              {{#link-to 'contact' this }}
-                {{name}}
-              {{/link-to}}
-            </h2>
-            <p>{{about}}</p>
-          </div>
+          {{contact-details contact=this}}
         </li>
       {{/each}}
     </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="components/contact-details">
+    <img {{bind-attr src="contact.avatar" alt="contact.name"}} class="img-thumbnail col-md-3" />
+    <div class="col-md-9">
+      <h2>
+        {{#link-to 'contact' contact }}
+          {{contact.name}}
+        {{/link-to}}
+      </h2>
+      <p>{{contact.about}}</p>
+
+      {{#if isProductive}}
+        <p class='text-muted'>Products ({{productsCount}}).</p>
+      {{/if}}
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="contact">
@@ -186,9 +198,7 @@
               {{/link-to}}
             </li>
           {{else}}
-            <li>
-              <p class='text-muted'><em>No products found.</em></p>
-            </li>
+            <li><p class='text-muted'><em>No products found.</em></p></li>
           {{/each}}
         </ul>
       </div>

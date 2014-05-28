@@ -1,11 +1,9 @@
 // Create ember app
-
 App = Ember.Application.create({
   LOG_TRANSITIONS: true
 });
 
 // Router
-
 App.Router.map(function() {
   this.route('about');
   this.route('credits', { path: '/thanks' });
@@ -18,7 +16,6 @@ App.Router.map(function() {
 });
 
 // Routes
-
 App.IndexRoute = Ember.Route.extend({
   model: function() {
     return this.store.findAll('product');
@@ -34,9 +31,6 @@ App.ProductsRoute = Ember.Route.extend({
 App.ProductsOnsaleRoute = Ember.Route.extend({
   model: function() {
     return this.modelFor('products').filterBy('isOnSale');
-  },
-  renderTemplate: function(controller) {
-    this.render('products/index', { controller: controller });
   }
 });
 
@@ -47,7 +41,6 @@ App.ContactsRoute = Ember.Route.extend({
 });
 
 // Controllers
-
 App.IndexController = Ember.ArrayController.extend({
   productsCount: Ember.computed.alias('length'),
 
@@ -70,8 +63,22 @@ App.ContactsController = Ember.ArrayController.extend({
   sortProperties: ['name']
 });
 
-// Models
+// Components
+App.ProductDetailsComponent = Ember.Component.extend({
+  reviewsCount: Ember.computed.alias('product.reviews.length'),
+  hasReviews: function() {
+    return this.get('reviewsCount') > 0;
+  }.property('reviewsCount')
+});
 
+App.ContactDetailsComponent = Ember.Component.extend({
+  productsCount: Ember.computed.alias('contact.products.length'),
+  isProductive: function() {
+    return this.get('productsCount') > 2;
+  }.property('productsCount')
+});
+
+// Models
 App.Product = DS.Model.extend({
   title: DS.attr('string'),
   price: DS.attr('number'),
@@ -96,7 +103,6 @@ App.Review = DS.Model.extend({
 });
 
 // Adapter and fixtures
-
 App.ApplicationAdapter = DS.FixtureAdapter.extend();
 
 App.Product.FIXTURES = [
@@ -105,7 +111,7 @@ App.Product.FIXTURES = [
     title: "Flint",
     price: 99,
     description: "Flint is good for your skin",
-    isOnSale: false,
+    isOnSale: true,
     image: "images/products/flint.png",
     reviews: [100, 101],
     crafter: 1
@@ -136,6 +142,15 @@ App.Product.FIXTURES = [
     isOnSale: false,
     image: "images/products/tinder.png",
     crafter: 1
+  },
+  {
+    id: 5,
+    title: "Matches",
+    price: 12,
+    description: "Mostly matches are very good for your health",
+    isOnSale: true,
+    image: "images/products/matches.png",
+    crafter: 1
   }
 ];
 
@@ -145,7 +160,7 @@ App.Contact.FIXTURES = [
     name: "Ju",
     avatar: "images/contacts/giamia.png",
     about: "Hell Boy",
-    products: [1, 4]
+    products: [1, 4, 5]
   },
   {
     id: 2,
