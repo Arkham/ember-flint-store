@@ -48,9 +48,13 @@
       {{outlet}}
 
       <footer>
-        <hr />
-        <p class='pull-left'>&copy; 2013 The Flint &amp; Flame</p>
-        <p class='pull-right'>{{#link-to 'credits'}}Credits{{/link-to}}</p>
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+            <p class='pull-left'>&copy; 2013 The Flint &amp; Flame</p>
+            <p class='pull-right'>{{#link-to 'credits'}}Credits{{/link-to}}</p>
+          </div>
+        </div>
       </footer>
     </div>
   </script>
@@ -58,13 +62,28 @@
   <script type="text/x-handlebars" data-template-name="index">
     <div class="jumbotron">
       <h1>Welcome to the Flint &amp; Flame.</h1>
-      <img {{bind-attr src="logo"}} alt="Logo" />
-      <p>Rendered on {{time}}.</p>
+      <p class='text-muted'>
+        <img {{bind-attr src="logo"}} alt="Logo" />
+        <small>Rendered on {{time}}</small>
+      </p>
 
       {{#link-to 'products' class="btn btn-warning"}}
         Browse all {{productsCount}} items &raquo;
       {{/link-to}}
     </div>
+
+    {{#each onSale}}
+      <div class="col-sm-4">
+        <img {{bind-attr src="image"}} class="img-thumbnail col-sm-5" />
+        <div class="col-sm-7">
+          <h2>{{title}}</h2>
+          <p>{{description}}</p>
+          <p>{{#link-to 'product' this class='btn btn-success'}}
+            Buy for ${{price}}
+            {{/link-to}}</p>
+        </div>
+      </div>
+    {{/each}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="about">
