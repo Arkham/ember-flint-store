@@ -36,13 +36,22 @@ App.Product = DS.Model.extend({
   price: DS.attr('number'),
   description: DS.attr('string'),
   isOnSale: DS.attr('boolean'),
-  image: DS.attr('string')
+  image: DS.attr('string'),
+  reviews: DS.hasMany('review', { async: true }),
+  crafter: DS.belongsTo('contact')
 });
 
 App.Contact = DS.Model.extend({
   name: DS.attr('string'),
   about: DS.attr('string'),
-  avatar: DS.attr('string')
+  avatar: DS.attr('string'),
+  products: DS.hasMany('product', { async: true })
+})
+
+App.Review = DS.Model.extend({
+  text: DS.attr('string'),
+  reviewedAt: DS.attr('date'),
+  product: DS.belongsTo('product')
 })
 
 App.ApplicationAdapter = DS.FixtureAdapter.extend();
@@ -54,7 +63,9 @@ App.Product.FIXTURES = [
     price: 99,
     description: "Flint is good for your skin",
     isOnSale: true,
-    image: "images/products/flint.png"
+    image: "images/products/flint.png",
+    reviews: [100, 101],
+    crafter: 1
   },
   {
     id: 2,
@@ -62,7 +73,8 @@ App.Product.FIXTURES = [
     price: 99,
     description: "Easily kindling is very good for your health",
     isOnSale: false,
-    image: "images/products/kindling.png"
+    image: "images/products/kindling.png",
+    crafter: 2
   }
 ];
 
@@ -71,12 +83,27 @@ App.Contact.FIXTURES = [
     id: 1,
     name: "Ju",
     avatar: "images/contacts/giamia.png",
-    about: "Hell Boy"
+    about: "Hell Boy",
+    products: [1]
   },
   {
     id: 2,
     name: "Gio",
     avatar: "images/contacts/anostagia.png",
-    about: "Yolo Yolo"
+    about: "Yolo Yolo",
+    products: [2]
+  }
+]
+
+App.Review.FIXTURES = [
+  {
+    id: 100,
+    product: 1,
+    text: "Started a fire in no time"
+  },
+  {
+    id: 101,
+    product: 1,
+    text: "Not the brightest flame, but warm!"
   }
 ]
