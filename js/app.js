@@ -63,6 +63,15 @@ App.ContactsController = Ember.ArrayController.extend({
   sortProperties: ['name']
 });
 
+App.ReviewsController = Ember.ArrayController.extend({
+  sortProperties: ['reviewedAt'],
+  sortAscending: false
+});
+
+App.ContactProductsController = Ember.ArrayController.extend({
+  sortProperties: ['title']
+});
+
 // Components
 App.ProductDetailsComponent = Ember.Component.extend({
   reviewsCount: Ember.computed.alias('product.reviews.length'),
@@ -182,11 +191,13 @@ App.Review.FIXTURES = [
   {
     id: 100,
     product: 1,
-    text: "Started a fire in no time"
+    text: "Started a fire in no time",
+    reviewedAt: new Date("May 27, 2014 11:12:00")
   },
   {
     id: 101,
     product: 1,
-    text: "Not the brightest flame, but warm!"
+    text: "Not the brightest flame, but warm!",
+    reviewedAt: new Date("May 25, 2014 11:12:00")
   }
 ];
