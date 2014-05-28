@@ -78,6 +78,13 @@ App.ContactDetailsComponent = Ember.Component.extend({
   }.property('productsCount')
 });
 
+// Views
+App.ProductView = Ember.View.extend({
+  classNames: ['row'],
+  classNameBindings: ['isOnSale'],
+  isOnSale: Ember.computed.alias('controller.isOnSale')
+});
+
 // Models
 App.Product = DS.Model.extend({
   title: DS.attr('string'),
