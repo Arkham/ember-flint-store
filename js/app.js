@@ -19,6 +19,14 @@ App.IndexController = Ember.Controller.extend({
   }.property()
 });
 
+App.ProductsController = Ember.ArrayController.extend({
+  sortProperties: ['title']
+})
+
+App.ContactsController = Ember.ArrayController.extend({
+  sortProperties: ['name']
+})
+
 App.ProductsRoute = Ember.Route.extend({
   model: function() {
     return this.store.findAll('product');

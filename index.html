@@ -56,11 +56,15 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="index">
-    <h1>Welcome to the Flint &amp; Flame.</h1>
+    <div class="jumbotron">
+      <h1>Welcome to the Flint &amp; Flame.</h1>
+      <img {{bind-attr src="logo"}} alt="Logo" />
+      <p>Rendered on {{time}}.</p>
 
-    <p>There are {{productsCount}} products.</p>
-    <p>Rendered on {{time}}.</p>
-    <img {{bind-attr src="logo"}} alt="Logo" />
+      {{#link-to 'products' class="btn btn-warning"}}
+        Browse all {{productsCount}} items &raquo;
+      {{/link-to}}
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="about">
